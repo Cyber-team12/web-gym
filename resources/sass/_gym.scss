@@ -1,0 +1,203 @@
+/* Tema Gym */
+:root,
+[data-bs-theme='dark'] {
+  --gym-ink: #14113a;
+  --gym-panel: #1f1b55;
+  --gym-panel-2: #29236b;
+  --gym-gold: #ffd166;
+  --gym-pink: #ff5c8a;
+  --gym-mist: #b8b2ff;
+  --gym-text: #f1efff;
+
+  --bs-body-bg: #14113a;
+  --bs-body-color: #f1efff;
+  --bs-body-font-family: 'DM Sans', system-ui, sans-serif;
+  --bs-border-color: rgba(184, 178, 255, 0.2);
+  --bs-secondary-color: rgba(241, 239, 255, 0.68);
+  --bs-link-color: #ffd166;
+  --bs-link-hover-color: #ffe08f;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, rgba(255, 92, 138, 0.18), transparent 60%),
+    radial-gradient(50rem 40rem at -10% 110%, rgba(120, 100, 255, 0.25), transparent 60%),
+    radial-gradient(1.5px 1.5px at 12% 22%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 14%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 64% 70%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 30% 82%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 90% 48%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 44% 38%, #fff 50%, transparent 51%),
+    #14113a;
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand, .card-header {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Navbar */
+.gym-nav {
+  background: rgba(20, 17, 58, 0.7);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--bs-border-color);
+}
+.gym-nav .navbar-brand {
+  font-size: 1.45rem;
+  color: var(--gym-text);
+}
+.gym-nav .brand-star {
+  display: inline-block;
+  color: var(--gym-gold);
+  transition: transform 0.6s ease;
+}
+.gym-nav .navbar-brand:hover .brand-star {
+  transform: rotate(180deg) scale(1.25);
+}
+.gym-nav .nav-link {
+  position: relative;
+  color: var(--bs-secondary-color);
+  transition: color 0.2s;
+}
+.gym-nav .nav-link:hover,
+.gym-nav .nav-link.active {
+  color: var(--gym-text);
+}
+.gym-nav .nav-link:not(.dropdown-toggle)::after {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.2rem;
+  height: 2px;
+  background: var(--gym-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.gym-nav .nav-link:not(.dropdown-toggle):hover::after,
+.gym-nav .nav-link:not(.dropdown-toggle).active::after {
+  transform: scaleX(1);
+}
+.dropdown-menu {
+  background: var(--gym-panel);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+}
+.dropdown-item:hover {
+  background: var(--gym-panel-2);
+}
+
+/* Role pill */
+.role-pill {
+  display: inline-block;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.role-admin { background: rgba(255, 92, 138, 0.2); color: #ff8fae; border: 1px solid rgba(255, 92, 138, 0.5); }
+.role-member { background: rgba(255, 209, 102, 0.15); color: var(--gym-gold); border: 1px solid rgba(255, 209, 102, 0.45); }
+
+/* Kartu */
+.card {
+  background: linear-gradient(160deg, rgba(41, 35, 107, 0.75), rgba(31, 27, 85, 0.75));
+  border: 1px solid var(--bs-border-color);
+  border-radius: 1rem;
+  backdrop-filter: blur(6px);
+}
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid var(--bs-border-color);
+  font-size: 1.2rem;
+}
+
+/* Kartu dengan cahaya yang ngikutin mouse */
+.glow-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 209, 102, 0.2), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.glow-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 209, 102, 0.55);
+}
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+/* Dashboard */
+.hero { padding: 2.5rem 0 1.5rem; }
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+}
+.stat-label { color: var(--bs-secondary-color); font-size: 0.95rem; }
+.stat-number {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--gym-gold);
+  font-size: clamp(2.2rem, 5vw, 3rem);
+}
+.stat-number.big { font-size: clamp(3.5rem, 9vw, 6rem); }
+.empty-state { text-align: center; padding: 2.5rem 1rem; }
+.empty-state .empty-icon { font-size: 2rem; color: var(--gym-gold); }
+
+/* Form dan tombol */
+.form-control {
+  background: rgba(20, 17, 58, 0.6);
+  border-color: var(--bs-border-color);
+  color: var(--gym-text);
+  border-radius: 0.65rem;
+}
+.form-control:focus {
+  background: rgba(20, 17, 58, 0.85);
+  color: var(--gym-text);
+  border-color: var(--gym-gold);
+  box-shadow: 0 0 0 0.25rem rgba(255, 209, 102, 0.2);
+}
+.btn { border-radius: 0.75rem; transition: transform 0.15s ease; }
+.btn:active { transform: scale(0.96); }
+.btn-primary {
+  --bs-btn-color: #14113a;
+  --bs-btn-bg: #ffd166;
+  --bs-btn-border-color: #ffd166;
+  --bs-btn-hover-color: #14113a;
+  --bs-btn-hover-bg: #ffe08f;
+  --bs-btn-hover-border-color: #ffe08f;
+  --bs-btn-active-color: #14113a;
+  --bs-btn-active-bg: #ffc23d;
+  --bs-btn-active-border-color: #ffc23d;
+  --bs-btn-focus-shadow-rgb: 255, 209, 102;
+  --bs-btn-disabled-color: #14113a;
+  --bs-btn-disabled-bg: #ffd166;
+  --bs-btn-disabled-border-color: #ffd166;
+  font-weight: 700;
+}
+
+/* Canvas bintang kursor */
+#star-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
