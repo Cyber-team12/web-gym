@@ -7,6 +7,13 @@
 
     <title>{{ config('app.name', 'Gym') }}</title>
 
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('fitgym_theme') || 'dark';
+            document.documentElement.setAttribute('data-bs-theme', savedTheme);
+        })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:600,800|dm-sans:400,500,700" rel="stylesheet">
 
@@ -164,8 +171,22 @@
                             </li>
                             @if(auth()->user()->role === 'admin')
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}"
-                                       href="{{ route('admin.test') }}">Menu Admin</a>
+                                    <a class="nav-link text-warning fw-bold" href="{{ route('home') }}">
+                                        ✦ Buka Panel Admin
+                                    </a>
+                                </li>
+                            @else
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('member.plans.*') || request()->routeIs('member.checkout.*') ? 'active' : '' }}"
+                                       href="{{ route('member.plans.index') }}">✦ Beli Paket</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('member.payments.*') ? 'active' : '' }}"
+                                       href="{{ route('member.payments.index') }}">Pembayaran Saya</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('member.attendances.*') ? 'active' : '' }}"
+                                       href="{{ route('member.attendances.index') }}">Riwayat Kunjungan</a>
                                 </li>
                             @endif
                         @endauth

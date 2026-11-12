@@ -1,58 +1,137 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# FitGym — Sistem Manajemen & Presensi Gym (Laravel)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> **Projek UTS Pemrograman Web Tingkat Mahir**  
+> Dibuat dengan **Laravel 11**, **Bootstrap 5 (Dark Cosmic Theme)**, dan **MySQL/MariaDB**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🌟 Fitur Utama & Pemetaan Spesifikasi
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Database & Relasi (6 Tabel Berelasi via Migration)
+- `users`: Autentikasi, hak akses multi-role (`admin`, `member`), status akun aktif/nonaktif, nomor kontak.
+- `membership_plans`: Master data paket latihan gym (durasi hari, harga, deskripsi, status aktif).
+- `vouchers`: Kupon potongan harga promo (persen / nominal rupiah, kuota pemakaian, masa berlaku).
+- `payments`: Transaksi pembelian paket, kalkulasi diskon voucher, upload file bukti transfer, status persetujuan (`pending`, `approved`, `rejected`), catatan alasan penolakan, serta catatan validator admin.
+- `memberships`: Langganan aktif member yang otomatis terbentuk setelah transaksi disetujui, mencatat tanggal mulai dan akhir.
+- `attendances`: Catatan presensi check-in harian member, terhubung ke membership aktif dan admin yang mencatat.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Modul CRUD Lengkap (Admin)
+- **CRUD Paket Membership**: Tambah, ubah, hapus paket; dilengkapi pencarian nama paket, filter status aktif/nonaktif, pengurutan kolom, dan pagination.
+- **CRUD Voucher Promo**: Tambah kode unik, tentukan jenis diskon (% atau Rp), kuota maksimal, masa aktif; dilengkapi filter tipe, filter kedaluwarsa, pengurutan, dan pagination.
+- **CRUD Manajemen Pengguna / Member**: Tambah akun, ubah role (Admin/Member), aktifkan/nonaktifkan akun, reset password, pencarian nama/email, dan pagination.
 
-## Learning Laravel
+### 3. Validasi & Penanganan Error
+- Mekanisme **FormRequest** Laravel (`PlanRequest`, `VoucherRequest`, `UserRequest`).
+- Validasi unik pada kode voucher dan email member.
+- Pesan error kustom berbahasa Indonesia dan penanda visual Bootstrap `is-invalid`.
+- Pencegahan penghapusan data berelasi dengan `QueryException` catch dan notifikasi alert yang ramah pengguna.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 4. Alur Transaksi & Validasi Pembayaran
+- **Member**: Memilih paket membership, menerapkan kode voucher promo dengan pengecekan interaktif AJAX, melihat potongan harga langsung, dan mengunggah berkas bukti transfer (JPG, PNG, WEBP, PDF).
+- **Admin**: Memeriksa antrean pembayaran `pending`, melihat pratinjau bukti transfer, menyetujui transaksi (yang otomatis mengaktifkan/memperpanjang membership dan menambah kuota terpakai voucher) atau menolak transaksi disertai alasan penolakan.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 5. Presensi & Check-in Member
+- Pencatatan presensi hanya untuk member dengan membership yang sedang aktif.
+- Validasi pencegahan check-in ganda di hari yang sama.
+- Riwayat presensi dilengkapi filter tanggal dan pencarian member.
+- Member dapat melihat riwayat kunjungan dan total kedatangannya sendiri.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### 6. Laporan Keuangan & Penjualan
+- Filter berdasarkan rentang tanggal dan jenis paket.
+- Metrik agregasi: Total Pendapatan Bersih, Total Transaksi Sukses, Total Diskon Diberikan, dan Bruto.
+- Rincian kontribusi pendapatan per paket latihan.
+- Tabel transaksi terperinci dan tombol **Cetak Laporan** (print-friendly CSS).
 
-## Agentic Development
+### 7. Dashboard Dinamis
+- **Dashboard Admin**: Ringkasan data nyata (Member Aktif, Total Member, Kunjungan Hari Ini, Pendapatan Bulan Ini, antrean pending payment, dan check-in hari ini).
+- **Dashboard Member**: Status keaktifan membership, hitung mundur sisa hari aktif, total kunjungan, notifikasi status pembayaran pending/ditolak, dan riwayat presensi terbaru.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 8. Autentikasi, Otorisasi & Keamanan
+- Password di-hash aman dengan bcrypt.
+- `RoleMiddleware` memproteksi rute admin (`role:admin`) dan rute member (`role:member`).
+- Akses tidak sah langsung ditolak dengan halaman kustom `403 Forbidden` yang elegan.
 
+---
+
+## 🔑 Akun Demo Pengujian
+
+Semua akun demo berikut telah disediakan melalui Database Seeder:
+
+| Role | Nama | Email | Password | Keterangan |
+|---|---|---|---|---|
+| **Admin** | Admin FitGym | `admin@gym.com` | `password` | Akses penuh seluruh modul admin |
+| **Member** | Member Setia | `member@gym.com` | `password` | Akun dengan membership aktif (Paket 3 Bulan) & riwayat presensi |
+| **Member** | Budi Santoso | `budi@gym.com` | `password` | Akun dengan transaksi pending (siap untuk demo validasi admin) |
+| **Member** | Siti Rahma | `siti@gym.com` | `password` | Akun dengan riwayat pembayaran ditolak |
+
+### Kode Voucher Demo:
+- `FITHEMAT` : Diskon 20% (Status: Aktif, Kuota: 50)
+- `DISKON50K` : Potongan Rp 50.000 (Status: Aktif, Kuota: 20)
+- `KEDALUWARSA` : Diskon Rp 25.000 (Status: Sudah Kedaluwarsa)
+
+---
+
+## 🚀 Panduan Instalasi & Menjalankan
+
+### 1. Clone & Masuk Direktori
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <URL_REPO_GITHUB_ANDA>
+cd web-gym
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install Dependensi PHP & Node.js
+```bash
+composer install
+npm install
+```
 
-## Contributing
+### 3. Konfigurasi Environment
+Salin file environment dan atur koneksi database MySQL:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+Pastikan pada `.env`:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=fitgym
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Migrasi & Seeder Database
+```bash
+php artisan migrate:fresh --seed
+php artisan storage:link
+```
 
-## Code of Conduct
+### 5. Build Aset Frontend
+```bash
+npm run build
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 6. Jalankan Server Pengembangan
+```bash
+php artisan serve
+```
+Buka browser di `http://localhost:8000` (otomatis diarahkan ke halaman login).
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🧪 Pengujian Otomatis (Automated Testing)
 
-## License
+Projek ini dilengkapi dengan 19 Feature & Unit Tests yang mencakup seluruh skenario penilaian:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan test
+```
+
+Hasil pengujian:
+```text
+Pass: 19
+Assertions: 78
+Duration: ~1.2s
+Status: ALL TESTS PASSED
+```

@@ -146,6 +146,43 @@ function initCountUp() {
     });
 }
 
+/* Tema Gelap & Terang (Color Mode Switcher) */
+function initTheme() {
+    const savedTheme = localStorage.getItem('fitgym_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    document.querySelectorAll('.theme-toggle-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme') || 'dark';
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(nextTheme);
+        });
+    });
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-bs-theme', theme);
+    localStorage.setItem('fitgym_theme', theme);
+
+    document.querySelectorAll('.theme-toggle-btn').forEach((btn) => {
+        const icon = btn.querySelector('.theme-icon');
+        const text = btn.querySelector('.theme-text');
+        if (theme === 'light') {
+            if (icon) icon.textContent = '☀️';
+            if (text) text.textContent = 'Tema Terang';
+            btn.classList.remove('btn-outline-warning');
+            btn.classList.add('btn-outline-primary');
+        } else {
+            if (icon) icon.textContent = '🌙';
+            if (text) text.textContent = 'Tema Gelap';
+            btn.classList.remove('btn-outline-primary');
+            btn.classList.add('btn-outline-warning');
+        }
+    });
+}
+
 if (!reduceMotion) initStars();
 initGlowCards();
 initCountUp();
+initTheme();

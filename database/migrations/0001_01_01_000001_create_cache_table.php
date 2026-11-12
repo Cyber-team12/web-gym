@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('expiration')->index();
         });
     }
+
     public function down(): void
     {
         Schema::dropIfExists('cache');
