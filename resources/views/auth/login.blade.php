@@ -58,18 +58,6 @@
                     </button>
                 </form>
 
-                <div class="alert alert-dark border border-secondary mt-4 mb-0 p-3 small">
-                    <div class="fw-bold text-warning mb-1">Akun Demo Cepat:</div>
-                    <div class="d-flex justify-content-between text-secondary">
-                        <span>Admin: <code>admin@gym.com</code></span>
-                        <span>Pass: <code>password</code></span>
-                    </div>
-                    <div class="d-flex justify-content-between text-secondary">
-                        <span>Member: <code>member@gym.com</code></span>
-                        <span>Pass: <code>password</code></span>
-                    </div>
-                </div>
-
                 <div class="text-center mt-4">
                     <span class="small text-secondary">Belum punya akun?</span>
                     <a href="{{ route('register') }}" class="small text-warning text-decoration-none ms-1">Daftar sekarang</a>

@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $admin = User::create([
             'name' => 'Admin FitGym',
             'email' => 'admin@gym.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('Fitgym123'),
             'phone' => '081234567890',
             'role' => 'admin',
             'is_active' => true,
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
         $budi = User::create([
             'name' => 'Budi Santoso',
             'email' => 'budi@gym.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('Santoso123'),
             'phone' => '081234567892',
             'role' => 'member',
             'is_active' => true,
@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
         $siti = User::create([
             'name' => 'Siti Rahma',
             'email' => 'siti@gym.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('Rahma123'),
             'phone' => '081234567893',
             'role' => 'member',
             'is_active' => true,
@@ -86,7 +86,7 @@ class DatabaseSeeder extends Seeder
 
         // Vouchers
         $voucherDiskon = Voucher::create([
-            'code' => 'FITHEMAT',
+            'code' => 'HEMATFIT',
             'type' => 'percent',
             'value' => 20,
             'quota' => 50,
